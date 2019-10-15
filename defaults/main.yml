@@ -1,0 +1,13 @@
+---
+
+plex_container_name: "plex"
+plex_db_dir: "changeme"
+plex_transcode_dir: "changeme"
+plex_media_dir: "changeme"
+plex_timezone: "Etc/UTC"
+plex_claim_token: "changeme"
+plex_advertise_ip: "0.0.0.0"
+plex_hostname: "PlexServer"
+plex_uid: "1001"
+plex_gid: "1001"
+

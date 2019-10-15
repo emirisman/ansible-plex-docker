@@ -1,0 +1,36 @@
+---
+
+- name: Ensure that plex directories are present
+  become: True
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ plex_uid }}"
+    group: "{{ plex_gid }}"
+  with_items:
+    - "{{ plex_db_dir }}"
+    - "{{ plex_transcode_dir }}"
+
+- name: Create plex container
+  include_role:
+    name: container
+  vars:
+    container_name: "{{ plex_container_name }}"
+    container_image: plexinc/pms-docker
+    container_state: started
+    container_volumes:
+      - "{{ plex_db_dir }}:/config"
+      - "{{ plex_transcode_dir }}:/transcode"
+      - "{{ plex_media_dir }}:/data"
+    container_ports:
+      - "32400:32400"
+      - "3005:3005"
+      - "8324:8324"
+      - "32469:32469"
+      - "1900:1900/udp"
+      - "32410:32410/udp"
+      - "32412:32412/udp"
+      - "32413:32413/udp"
+      - "32414:32414/udp"
+    container_env: {TZ: "{{ plex_timezone }}", PLEX_CLAIM: "{{ plex_claim_token }}", ADVERTISE_IP: "http://{{ plex_advertise_ip }}:32400/"}
+    container_hostname: "{{ plex_hostname }}"
